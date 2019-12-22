@@ -15,12 +15,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     Uri image_uri;
     Bitmap bitmap;
+    TextToSpeech textToSpeech;
 
 
+     void convertTextToSpeech(String text){
+        textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+    }
 
 
     @Override
@@ -48,6 +56,28 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setDrawingCacheEnabled(true);
         mImageView.buildDrawingCache(true);
 
+
+
+        //tts instantiation
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS) {
+                    int result = textToSpeech.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("error", "This Language is not supported");
+                    } else {
+                        //
+                    }
+                } else {
+                    Log.e("error", "Initilization Failed!");
+                }
+            }
+        });
+
+
+
         mImageView.setOnTouchListener(
                 new View.OnTouchListener() {
                     @Override
@@ -61,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                             int blue = Color.blue(pixel);
 
                             textView.setText(getColourName(pixel));
+                            convertTextToSpeech(getColourName(pixel));
                             textView.setTextColor(pixel);
                         }
                         return true;
@@ -73,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String getColourName(int c) {
-        String name = "UNKNOWN";
+        String name = null;
         int colour = Color.BLACK;
 
         if(Color.red(c) > 127)  { colour |= Color.RED; }
