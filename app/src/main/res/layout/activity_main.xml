@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="HELLO WORLD"
-        android:textSize="25dp"
+        android:textSize="35dp"
+        android:gravity="center"
+
         />
     <!--ImageView where image will be set -->
     <ImageView

@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                             int green = Color.green(pixel);
                             int blue = Color.blue(pixel);
 
-                            textView.setText("Red: "+red+" Green: "+green+" Blue: "+blue);
+                            textView.setText(getColourName(pixel));
+                            textView.setTextColor(pixel);
                         }
                         return true;
                     }
@@ -70,6 +71,45 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public static String getColourName(int c) {
+        String name = "UNKNOWN";
+        int colour = Color.BLACK;
+
+        if(Color.red(c) > 127)  { colour |= Color.RED; }
+        if(Color.green(c) > 127) { colour |= Color.GREEN; }
+        if(Color.blue(c) > 127) { colour |= Color.BLUE; }
+
+        switch (colour) {
+            case Color.BLACK:
+                name = "BLACK";
+                break;
+            case Color.BLUE:
+                name = "BLUE";
+                break;
+            case Color.GREEN:
+                name = "GREEN";
+                break;
+            case Color.CYAN:
+                name = "CYAN";
+                break;
+            case Color.RED:
+                name = "RED";
+                break;
+            case Color.MAGENTA:
+                name = "MAGENTA";
+                break;
+            case Color.YELLOW:
+                name = "YELLOW";
+                break;
+            case Color.WHITE:
+                name = "WHITE";
+                break;
+        }
+        return name;
+    }
+
+
 
     public void takePicture(View view) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
