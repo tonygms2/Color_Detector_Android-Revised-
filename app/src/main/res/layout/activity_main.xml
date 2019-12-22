@@ -7,13 +7,20 @@
     android:orientation="vertical"
     android:gravity="center_vertical"
     tools:context=".MainActivity">
-
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HELLO WORLD"
+        android:textSize="25dp"
+        />
     <!--ImageView where image will be set -->
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        />
     <!--Button to open camera -->
     <Button
         android:id="@+id/capture_btn"
@@ -21,5 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="takePicture"/>
+
+
 
 </LinearLayout>

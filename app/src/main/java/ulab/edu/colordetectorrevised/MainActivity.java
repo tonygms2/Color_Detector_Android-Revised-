@@ -8,14 +8,18 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button mCaptureButton;
     ImageView mImageView;
-
+    TextView textView;
     Uri image_uri;
+    Bitmap bitmap;
 
 
 
@@ -36,10 +41,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mImageView = findViewById(R.id.image_view);
-        mCaptureButton = findViewById(R.id.capture_btn);
+        mImageView = (ImageView) findViewById(R.id.image_view);
+        mCaptureButton = (Button) findViewById(R.id.capture_btn);
+        textView = (TextView)findViewById(R.id.textView);
 
+        mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache(true);
 
+        mImageView.setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(event.getAction() == event.ACTION_DOWN || event.getAction() == event.ACTION_MOVE){
+                            bitmap = mImageView.getDrawingCache();
+                            int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
+
+                            int red = Color.red(pixel);
+                            int green = Color.green(pixel);
+                            int blue = Color.blue(pixel);
+
+                            textView.setText("Red: "+red+" Green: "+green+" Blue: "+blue);
+                        }
+                        return true;
+                    }
+                }
+        );
 
 
 
@@ -105,6 +131,16 @@ private void openCamera(){
             mImageView.setImageURI(image_uri);
         }
     }
+
+
+    //set ontouch listeners
+
+
+
+
+
+
+
 }
 
 
